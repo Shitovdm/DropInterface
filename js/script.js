@@ -1,3 +1,6 @@
+
+var step = "";
+
 // Функция добавление контента в конец текста консоли.
 function buildConsole(currentAnswer){
 	var delimiter = "<div class='clear'></div>";
@@ -59,7 +62,52 @@ $(function(){
 });
 
 
+/* Функции вызываемы из консоли. */
+
+// Функция обработки запросов действий с аккаунтами.
+function accountAct(act,stp){
+	var res = "";
+	$.ajax({
+		url: 'pages/other/operations/console.php', 
+		type:'POST',
+		async:false,
+		dataType: 'json',
+		data: {action: act, cstep: stp},
+		success: function(response){
+			
+			res = response.html;
+			step = response.step;
+			console.log(response);
+			console.log(response.step);
+		}
+	});
+	return([res,step]);
+}
+
+// Функция изменения цвета консоли.
+function changeCMDColor(bg,text){
+	$("#cmd").css("background-color",bg);
+	$("#cmd").css("color",text);
+	$("#cursor").css("background",text);
+}
+
+
+
+//-------------------------------------
+
+
 function commandHandler(command){
+	console.log(step);
+	if(step == "enterUsername"){
+		var result = accountAct("addacc","enterUsername");
+		console.log(result[0],result[1]);
+		return(dictionary[lang].console_enterUsername);
+	}
+	if(step == "enterSteamID"){
+		var result = accountAct("addacc","enterSteamID");
+		console.log(result[0],result[1]);
+		return(dictionary[lang].console_enterSteamID);
+	}
 	// Если введена команда смены цвета
 	if(command.substr(0, command.length - 3) == "color"){
 		var bg = command.substr(-2,1);
@@ -78,32 +126,64 @@ function commandHandler(command){
 		changeCMDColor(colors[bg],colors[text]);	
 	}
 	
-	
 	switch (command) {
+		// Системные команды.
 		case "help":
 			return(dictionary[lang].console_help);
 		case "exit":
-			console.log();
-			return("EXIT FROM CONSOLE!");
+			fConsole(); // Убираем окно.
+			$(".tmp-field").text(""); // Очищаем последнюю команду.
+			$("#history").html("");	// Очищаем предыдущии запросы.
+			return(dictionary[lang].console_exit);
+		case "minimize":
+			fConsole();
+			return(dictionary[lang].console_minimize);
+		case "clear":
+			$("#history").html("");
+			$(".tmp-field").text("");
+			return(dictionary[lang].console_clear);
+		case "time":
+			var time = new Date();
+			return(dictionary[lang].console_time + time);
 		case "color":
 			return(dictionary[lang].console_color);
+		case "version":
+			return(dictionary[lang].console_version);
+			
+		// Незавершенные
+		case "reload": // Перезагрузка страницы.	
+			return(dictionary[lang].console_reload);		
+		case "logout":
+			return(1);
+		case "accounts": // Вывод всех добавленных аккаунтов и прочей информации об аккаунтах.
+			var result = accountAct("accounts","");
+			step = result[1];
+			console.log(result[0],result[1]);
+			return(result[0]);
+		case "download db": // Вывод всех добавленных аккаунтов и прочей информации об аккаунтах.
+			return(dictionary[lang].console_downloadDB);	
+			
+		// Операции с аккаунтами.
+		case "viewstat": // Отображать отправляемые запросы.
+			return(dictionary[lang].console_turnON);
+		case "addacc":	// Добавить аккаунт.
+			return(dictionary[lang].console_addAccount);
+		case "removeacc": // Удалить аккаунт.
+			return(dictionary[lang].console_addAccount);
+		case "changeacc":	// Редактировать аккаунт.
+			return(dictionary[lang].console_addAccount);
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 		default:
 			console.log("'" + command + "' is not an internal command.");
 			return("'" + command + "' is not an internal command.");
 	}
 }
-
-
-/* Функции вызываемы из консоли. */
-
-// Функция изменения цвета консоли.
-function changeCMDColor(bg,text){
-	$("#cmd").css("background-color",bg);
-	$("#cmd").css("color",text);
-	$("#cursor").css("background",text);
-}
-
-
-
-//-------------------------------------
