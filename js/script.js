@@ -1,87 +1,21 @@
-
-var step = "";
-
-// Функция добавление контента в конец текста консоли.
-function buildConsole(currentAnswer){
-	var delimiter = "<div class='clear'></div>";
-	var history = $("#history").html();
-	var currentCommand = "<span>" + $(".tmp-field").text() + "</span>";
-	var newCommand = "<span class='tmp-field'></span><div id='cursor'></div>";
-	var currentAnswer = "<span>" + currentAnswer + "</span>";
-
-	$("#history").html(history + currentCommand + delimiter + currentAnswer + delimiter); 
-	var temp_history = $("#history").html();
-	$("#cmd").html("<div id='history'>" + temp_history + "</div>" + delimiter + newCommand);
-}
-
-$(function(){
-	var cursor;
-	var clickFlag = true; // true - нажатия нет, false - есть.
-	$('input').click(function(){
-		if(clickFlag){ // Если еще не было клика, до последней расфокусировке на поле input.
-			//(Предотвращает несколько выполнений функции на которой висит setInterval)
-			clickFlag = false;
-			$('input').focus();
-			cursor = window.setInterval(function(){
-				if($('#cursor').css('visibility') === 'visible'){
-					$('#cursor').css({ visibility: 'hidden' });
-				}else{
-					$('#cursor').css({ visibility: 'visible' });  
-				}  
-			},400);
-		}
-	});
-
-	$('input').keydown(function(e){
-		// Обработка Backspace.
-		if(e.keyCode == 8){// Нажат backspace, удаляем последний символ.
-			$('#cmd .tmp-field').text($('#cmd .tmp-field').text().substr(0, $('#cmd .tmp-field').text().length - 1));
-		}
-		// Обработка Enter.
-		if(e.keyCode == 13){ // Нажата клавиша Enter приступаем к обработке команды.
-			$('input').val('');
-			// Передача на обработчик команд.
-			buildConsole(commandHandler($('#cmd .tmp-field').text()));
-			//buildConsole('"' + $('#cmd .tmp-field').text() + '" is not an internal command.');
-	    }	
-	});
-	
-	// Обработка клавиш управления.
-	$('input').keyup(function(e){
-		if(e.keyCode != 13){
-			$('#cmd .tmp-field').text($(this).val());
-		}
-	});
-	
-	// Если курсор вышел за пределы консоли.
-	$('input').blur(function(){
-		clearInterval(cursor);
-		clickFlag = true;
-		$('#cursor').css({ visibility: 'visible' });    
-	});
-});
-
-
 /* Функции вызываемы из консоли. */
 
 // Функция обработки запросов действий с аккаунтами.
-function accountAct(act,stp){
+function accountAct(command,act,stp){
 	var res = "";
 	$.ajax({
 		url: 'pages/other/operations/console.php', 
 		type:'POST',
 		async:false,
 		dataType: 'json',
-		data: {action: act, cstep: stp},
+		data: {ccommand : command, action: act, cstep: stp},
 		success: function(response){
-			
 			res = response.html;
-			step = response.step;
+			GLOBAL_console_step = response.step;
 			console.log(response);
-			console.log(response.step);
 		}
 	});
-	return([res,step]);
+	return([res,GLOBAL_console_step]);
 }
 
 // Функция изменения цвета консоли.
@@ -97,16 +31,13 @@ function changeCMDColor(bg,text){
 
 
 function commandHandler(command){
-	console.log(step);
-	if(step == "enterUsername"){
-		var result = accountAct("addacc","enterUsername");
-		console.log(result[0],result[1]);
-		return(dictionary[lang].console_enterUsername);
+	if(GLOBAL_console_step == "enterUsername"){
+		var result = accountAct(command,"addacc",GLOBAL_console_step);
+		return(result[0]);
 	}
-	if(step == "enterSteamID"){
-		var result = accountAct("addacc","enterSteamID");
-		console.log(result[0],result[1]);
-		return(dictionary[lang].console_enterSteamID);
+	if(GLOBAL_console_step == "enterSteamID"){
+		var result = accountAct(command,"addacc",GLOBAL_console_step);
+		return(result[0]);
 	}
 	// Если введена команда смены цвета
 	if(command.substr(0, command.length - 3) == "color"){
@@ -126,7 +57,7 @@ function commandHandler(command){
 		changeCMDColor(colors[bg],colors[text]);	
 	}
 	
-	switch (command) {
+	switch (command.toLowerCase()) {
 		// Системные команды.
 		case "help":
 			return(dictionary[lang].console_help);
@@ -153,25 +84,47 @@ function commandHandler(command){
 		// Незавершенные
 		case "reload": // Перезагрузка страницы.	
 			return(dictionary[lang].console_reload);		
-		case "logout":
+		case "logout": // Завершение сессии работы с интерфейсом. ЗАВЕРШЕНО
+			$.ajax({
+				url: '/index.php?exit=1', 
+				type:'GET'
+			});
+			window.location.replace('/index.php');
 			return(1);
-		case "accounts": // Вывод всех добавленных аккаунтов и прочей информации об аккаунтах.
-			var result = accountAct("accounts","");
-			step = result[1];
-			console.log(result[0],result[1]);
+		case "accs": // Вывод всех добавленных аккаунтов и прочей информации об аккаунтах. ЗАВЕРШЕНО
+			var result = accountAct(command,"accounts","");
 			return(result[0]);
-		case "download db": // Вывод всех добавленных аккаунтов и прочей информации об аккаунтах.
-			return(dictionary[lang].console_downloadDB);	
+		case "sdb": // Сохранение базы аккаунтов.
+			var result = accountAct(command,"sdb","");
+			return(result[0]);	
 			
 		// Операции с аккаунтами.
 		case "viewstat": // Отображать отправляемые запросы.
 			return(dictionary[lang].console_turnON);
-		case "addacc":	// Добавить аккаунт.
-			return(dictionary[lang].console_addAccount);
+		
+		case "space": // Отобразить информацию о занятом и свободном месте.
+			var result = accountAct(command,"space","");
+			return(result[0]);
+		case "addacc":	// Добавить аккаунт. ЗАВЕРШЕНО
+			var result = accountAct(command,"addacc","");
+			GLOBAL_console_step = result[1];
+			return(result[0]);
 		case "removeacc": // Удалить аккаунт.
 			return(dictionary[lang].console_addAccount);
 		case "changeacc":	// Редактировать аккаунт.
 			return(dictionary[lang].console_addAccount);
+			
+		case "email":	// Редактировать аккаунт.
+			$.ajax({
+				url: 'pages/other/operations/sendEmail.php', 
+				type:'GET',
+				dataType:"text",
+				success: function(response){
+					console.log(response);	
+				}
+			});
+			return(dictionary[lang].console_email);
+			
 			
 			
 			
