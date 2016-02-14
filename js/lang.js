@@ -1,4 +1,3 @@
-
 dictionary = new Array(
 	{ // en
 		// Header
@@ -8,7 +7,7 @@ dictionary = new Array(
 		Log_out : "Log out",
 		// Main page
 		add_account : "Add account",
-		
+		add_accounts_block : "Add block of accounts(if possible)",
 		
 		
 		console : "Console"
@@ -52,7 +51,61 @@ dictionary = new Array(
 		message_turnOFF_console : "Консоль отключена",
 		// Консоль
 		console : "Консоль",
-		console_help : "Для вывода справки введите команду \"help\"",
+		console_exit : "!Drop Interface [Version 1.0] by Dmitry Shitov &copy;</span><div class='clear'></div><span>To display help, type the following command \"help\"",
+		console_clear : "!Drop Interface [Version 1.0] by Dmitry Shitov &copy;",
+		console_time : "Время: ",
+		console_version : "!Drop Interface [Version 1.0]",
+		console_minimize : "Консоль свернута",
+		console_email : "Письмо успешно отправлено",
+		
+		console_help :  "Для получения сведений об определенной команде наберите HELP <имя команды></span>" +
+						"<div class='clear'></div>" +
+						"<span> </span>" +
+						"<div class='clear'></div>" +
+						"<span>Общие команды:</span>" +
+						"<div class='clear'></div>" +
+						"<span>VERSION		Выводит информацию о текущей версии интерфейса.</span>" +
+						"<div class='clear'></div>" +
+						"<span>HELP		Вызывает справочную информацию о командах.</span>" +
+						"<div class='clear'></div>" +
+						"<span>CLEAR		Очищает рабочее поле консоли.</span>" +
+						"<div class='clear'></div>" +
+						"<span>EXIT		Закрывает консоль с последующем ее очищением.</span>" +
+						"<div class='clear'></div>" +
+						"<span>COLOR		Изменяет цвет представления информации в консоли.</span>" +
+						"<div class='clear'></div>" +
+						"<span>TIME		Выводит информацию о текущем времени.</span>" +
+						"<div class='clear'></div>" +
+						"<span>MINIMIZE	Сворачивает окно консоли.</span>" +
+						"<div class='clear'></div>" +
+						"<span> </span>" +
+						"<div class='clear'></div>" +
+						"<span>Команды управления аккаунтом:</span>" +
+						"<div class='clear'></div>" +
+						"<span>LOGOUT		Завершает текущую сессию работы с интерфейсом.</span>" +
+						"<div class='clear'></div>" +
+						"<span>RELOAD		Перезагружает страницу.</span>" +
+						"<div class='clear'></div>" +
+						"<span>ACCS		Выводит список всех добавленных аккаунтов.</span>" +
+						"<div class='clear'></div>" +
+						"<span>SPACE		Выводит информацию о количестве доступных и занятых аккаунтов.</span>" +
+						"<div class='clear'></div>" +
+						"<span>SDB		Загружает текущую базу данных с аккаунтами пользователя.</span>" +
+						"<div class='clear'></div>" +
+						"<span>ADDACC		Добавляет новый аккаунт.</span>" +
+						"<div class='clear'></div>" +
+						"<span>REMOVEACC	Удаляет существующий аккаунт.</span>" +
+						"<div class='clear'></div>" +
+						"<span>CHANGEACC	Изменяет существующий аккаунт.</span>" +
+						"<div class='clear'></div>" +
+						"<span>START		Запускает все введенные аккаунты.</span>" +
+						"<div class='clear'></div>" +
+						"<span>VIEWSTAT	Отображает активность аккаунтов при их включении.</span>" +
+						"<div class='clear'></div>"
+						,
+		
+		
+		
 		
 		console_color : "color [attr]</span>" + 
 						"<div class='clear'></div>" +
@@ -78,8 +131,7 @@ dictionary = new Array(
 						"<div class='clear'></div>" +
 						"<span> </span>" +
 						"<div class='clear'></div>" +
-						"<span>Пример: \"color 02\" задает зелёный передний план на черном фоне",
-		console_help : "Help me please!"
+						"<span>Пример: \"color 02\" задает зелёный передний план на черном фоне"
 
 	}
 	
