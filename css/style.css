@@ -1,0 +1,149 @@
+/*Main*/
+body{
+}
+.main-page{
+	margin-top:10px;
+}
+.tools{
+	z-index:2;
+	width:40px;
+	float:left;
+	height:auto;
+	position:absolute;
+	left:0px;
+	top:100px;
+	background-color:#8892BF;
+	border-radius: 0px 5px 5px 0px;
+	border:2px solid #4F5B93;
+	box-shadow: 0 0 10px 0px #6E6E6E;
+	border-left:none;
+}
+
+.tools div{
+	float:left;
+	padding:5px;
+	cursor:pointer;
+	margin-top:-2px;
+}
+.tools div:hover{
+	background-color:#717DB1;
+	border-bottom:2px solid #4F5B93;
+	border-top:2px solid #4F5B93;
+	padding-top:3px;
+	padding-bottom:3px;
+}
+
+.tools div img{
+	width:30px;
+	height:30px;
+}
+.selected-tool{
+	background-color:#717DB1;
+	border-bottom:2px solid #4F5B93;
+	border-top:2px solid #4F5B93;
+	padding-top:3px !important;
+	padding-bottom:3px !important;
+}
+.horizontal-dimention{
+	float:left;
+	height:1px !important;
+	width:30px;
+	border-bottom:2px solid #4F5B93;
+	margin:5px;
+	margin-bottom:7px;
+}
+.workspace{
+	margin-left:40px;
+}
+.clear{
+	clear:both;
+}
+.account-container{
+	width: 236px;
+	height:642px;
+	padding:8px;
+	margin-left:10px;
+	border:1px solid #ccc;
+	box-shadow: 0 0 10px 0px #6E6E6E;
+	border-radius:5px;
+	float:left;
+	background-color:#fff;
+}
+.account-container .add-accounts-block{
+	margin-top:246px;
+	margin-left:43px;
+	cursor:pointer;
+}
+.account-container .add-accounts-block:hover{
+	-webkit-transform: scale(0.95);
+  	-ms-transform: scale(0.95);
+  	transform: scale(0.95);
+	transition: .5s;
+}
+.account-status{
+	height: 10px;
+	width: 10px;
+	border-radius: 50%;
+	text-align: center;
+	vertical-align: middle;
+	position: relative;
+	box-shadow: 0px 0px 5px black, inset 0px 0px 10px #ccc;
+	display: inline-block;
+	margin: 5%;
+}
+.green{
+	background-color:#01FF06;
+}
+.yellow{
+	background-color:#FFFD00;
+}
+.grey{
+	background-color:#fff;
+}
+
+
+table tr td{
+	border:1px solid #ccc;
+}
+table tr .number{
+	border: 1px solid #777777;	
+  	box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999;
+  	background: linear-gradient(#9595b6, #5a567f);
+  	color: white;
+  	padding: 10px 10px;
+}
+table tr .number a{
+	color: white;
+}
+.changeable{
+	transition: 0s;
+}
+.changeable input{
+	padding:0px;
+	width: 152px;
+	height: 24px;
+	margin:0px;
+	text-align:center;
+	color:#000;
+	font-weight:600;
+}
+.account-table tr:nth-child(odd) {
+	background: #ebf3f9;
+}
+.account-table td {
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	position: relative;
+	text-align:center;
+	color:#0099;
+	font-weight:600;
+}
+.account-table td a{
+	text-decoration:none;
+	text-align:center;
+	color:#0099;
+	font-weight:600;
+}
+.add-accounts:hover{
+	border:1px solid #00EB3F;
+}
