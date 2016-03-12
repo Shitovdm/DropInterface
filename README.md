@@ -1,3 +1,3 @@
 # DropInterface  
 
-**Soon the description of the project will be laid out.**  
+**Soon all the sources of the project will be laid out and a description added.**  
